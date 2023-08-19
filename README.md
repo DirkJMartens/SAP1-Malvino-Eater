@@ -24,8 +24,9 @@ bottom of the perfboard. Instead, I soldered pin headers next to each row of IC 
 top and wire-wrapped from pinheader pin to pinheader pin. 
 
 Most important specs: 
-  - 4 bits address bus with 16 bytes RAM memory
-  - 8 bits data bus
-  - 4 instructions: Add, Sub, Out, Load
+  - 4 bits address bus with 16 bytes RAM memory and an 8 bits data bus 
+  - 4 instructions: Load, Add, Sub and Out
+  - Opcodes is the most-significant-nibble (top 4 bits) and memory location is the least (bottom 4 bits) 
   - Clock signal can be single stepped, or auto-run with variable clock speed (up to a few dozen Hz)
   - Done using a mix of various 74-series ICs (LS, F ...) and implemented on a 20cmx30cm (8"x12") perfboard.
+
