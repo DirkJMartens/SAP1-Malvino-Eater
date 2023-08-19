@@ -1,0 +1,34 @@
+The attached JPG file shows the layout and overall implementation. 
+
+The attached MP4 file shows the CPU executing a simple program: 
+  - A value of "0x01" was first stored in memory location "0xF" prior to starting the program 
+  - The program is only 8 instructions long:
+          LDA 0xF
+          ADD 0xF
+          ADD 0xF
+          SUB 0xF
+          ADD 0xF
+          ADD 0xF
+          SUB 0xF
+          OUT
+    - Each instruction cycle has 6 T-states of which the first 3 ("Fetch" cycle, T1 through T3) always perform the same sequence:
+          - During T1: load the Program Counter (Ep) via the W-bus into the Memory Addr Register (Lm)
+          - During T2: increment the Program Counter (Cp) 
+          - During T3: put RAM content (CE) onto the W-bus and load instruction in the InstrReg (Li) and decode the Control signals
+    - The next 3 T-states ("Execute" cycle) depend on the instruction to be executed and are governed by the Controls signals:
+      - During a "LDA" instruction:
+          - During T4: put lowest nibble (=mem addr) onto the bus (Ei) and load it into the MemAddrReg (Lm), thereby retrieving the mem content 
+          - During T5: put the mem content onto the bus (CE) and into the A-register (La)
+          - During T6: nothing is done here
+      - During a "ADD" instruction:
+          - During T4: put lowest nibble (=mem addr loc) onto the bus (Ei) and load it into the MemAddrReg (Lm), thereby retrieving the mem content 
+          - During T5: put the mem content onto the bus (CE) and into the B-register (Lb). The adder is set to "add" mode. 
+          - During T6: put the adder output (=sum) onto the bus (Eu) and load it into the A-register (La) 
+      - During a "SUB" instruction:
+          - During T4: put lowest nibble (=mem addr) onto the bus (Ei) and load it into the MemAddrReg (Lm), thereby retrieving the mem content 
+          - During T5: put the mem content onto the bus (CE) and into the A-register (La), set adder in "subtract" mode (Su) 
+          - During T6: put the adder output (=difference) onto the bus (Eu) and load it into the A-regiser (La) 
+      - During a "OUT" instruction:
+          - During T4: put the A-register onto the bus (Ea) and load it into the OUT register (Lo)  
+          - During T5: nothing is done here 
+          - During T6: nothing is done here
